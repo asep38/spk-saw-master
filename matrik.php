@@ -165,7 +165,7 @@ require "include/conn.php";
             <td>" . round($row->C19, 2) . "</td>
             <td>" . round($row->C20, 2) . "</td>
             <td>
-            <a href='keputusan-edit.php?id={$row->id_alternative}' class='btn btn-warning btn-sm'>Edit</a>
+                     
             <a href='keputusan-hapus.php?id={$row->id_alternative}' class='btn btn-danger btn-sm'>Hapus</a>
             </td>
           </tr>\n";
@@ -455,6 +455,8 @@ require "include/conn.php";
     </div>
   </div>
 
+
+  <!-- modal add -->
   <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
