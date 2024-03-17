@@ -8,7 +8,7 @@ $id_alternative = $_GET['id'];
 <head>
   <title>
     <?php
-    $query_nama = "SELECT * FROM `saw_alternatives` WHERE $id_alternative";
+    $query_nama = "SELECT * FROM `saw_alternatives` WHERE id_alternative = '$id_alternative'";
     $hasil = mysqli_query($db, $query_nama);
     if ($hasil) {
       // Tampilkan data sesuai dengan id_alternative

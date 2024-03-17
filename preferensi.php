@@ -45,7 +45,7 @@ require "R.php";
                       <th>Nama Alternatif</th>
                       <th>Hasil</th>
                       <th>Ranking</th>
-                      <!-- <th>Aksi</th> -->
+                      <th>Aksi</th>
                     </tr>
                     <?php
 
@@ -54,7 +54,7 @@ require "R.php";
                     $no = 0;
                     foreach ($R as $i => $r) {
                       for ($j = 0; $j < $m; $j++) {
-                        $P[$i] = (isset($P[$i]) ? $P[$i] : 0) + $r[$j] * $W[$j];
+                        $P[$i] = (isset ($P[$i]) ? $P[$i] : 0) + $r[$j] * $W[$j];
                       }
                     }
 
@@ -90,7 +90,7 @@ require "R.php";
         <td>{$name}</td>
         <td>" . number_format($P[$id_alternative], 2) . "</td>
         <td>{$rank}</td>
-        
+        <td> <a href='./export-guru.php?id={$id_alternative}'>Cetak</a> 
     </tr>";
                       $rank++;
                     }
