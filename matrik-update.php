@@ -2,20 +2,21 @@
 require_once "include/conn.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['id_alternative'], $_POST['name'], $_POST['editC1'], $_POST['editC2'], $_POST['editC3'])) {
+    if (isset($_POST['id_alternative'], $_POST['name'])) {
         $id_alternative = $_POST['id_alternative'];
         $name = $_POST['name'];
-        $editC1 = $_POST['editC1'];
-        $editC2 = $_POST['editC2'];
-        $editC3 = $_POST['editC3'];
 
         $sql_update_alternative = "UPDATE saw_alternatives SET name = ? WHERE id_alternative = ?";
         $stmt_update_alternative = $db->prepare($sql_update_alternative);
         $stmt_update_alternative->bind_param("si", $name, $id_alternative);
 
         if ($stmt_update_alternative->execute()) {
-            $criteria_values = array($editC1, $editC2, $editC3);
-            $criteria_ids = array(1, 2, 3);
+            $criteria_values = array();
+            $criteria_ids = range(1, 20);
+
+            foreach ($criteria_ids as $criteria_id) {
+                $criteria_values[] = $_POST['editC' . $criteria_id];
+            }
 
             $sql_update_criteria = "UPDATE saw_evaluations SET value = ? WHERE id_alternative = ? AND id_criteria = ?";
             $stmt_update_criteria = $db->prepare($sql_update_criteria);
@@ -33,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'message' => 'Data alternatif dan nilai-nilai kriteria berhasil diperbarui.'
             );
             echo json_encode($response);
-            // header("location:./matrik.php");
         } else {
             $response = array(
                 'status' => 'error',

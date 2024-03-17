@@ -74,26 +74,9 @@ require "include/conn.php";
                         <th colspan='6'>Kriteria</th>
                       </tr>
                       <tr>
-                        <th>C1</th>
-                        <th>C2</th>
-                        <th>C3</th>
-                        <th>C4</th>
-                        <th>C5</th>
-                        <th>C6</th>
-                        <th>C7</th>
-                        <th>C8</th>
-                        <th>C9</th>
-                        <th>C10</th>
-                        <th>C11</th>
-                        <th>C12</th>
-                        <th>C13</th>
-                        <th>C14</th>
-                        <th>C15</th>
-                        <th>C16</th>
-                        <th>C17</th>
-                        <th>C18</th>
-                        <th>C19</th>
-                        <th>C20</th>
+                        <?php for ($i = 1; $i <= 20; $i++) {
+                          echo "<th>C$i</th>";
+                        } ?>
                       </tr>
                       <?php
                       $sql = "SELECT
@@ -191,9 +174,11 @@ require "include/conn.php";
             <td>" . round($row->C19, 2) . "</td>
             <td>" . round($row->C20, 2) . "</td>
             <td>
-            <a href='keputusan-hapus.php?id={$row->id_alternative}' class='btn btn-danger btn-sm'>Hapus</a>
-            <button type='button' class='btn btn-primary btn-sm' 
-            onclick='openEditModal({$row->id_alternative})'>Edit</button>
+                <div class='btn-group'>
+                    <button type='button' class='btn btn-danger btn-sm mx-1' onclick='confirmDelete({$row->id_alternative})'>Hapus</button>
+                    <button type='button' class='btn btn-primary btn-sm' 
+                    onclick='openEditModal({$row->id_alternative})'>Edit</button>
+                  </div>
             </td>
           </tr>\n";
                       }
@@ -211,26 +196,9 @@ require "include/conn.php";
                         <th colspan='5'>Kriteria</th>
                       </tr>
                       <tr>
-                        <th>C1</th>
-                        <th>C2</th>
-                        <th>C3</th>
-                        <th>C4</th>
-                        <th>C5</th>
-                        <th>C6</th>
-                        <th>C7</th>
-                        <th>C8</th>
-                        <th>C9</th>
-                        <th>C10</th>
-                        <th>C11</th>
-                        <th>C12</th>
-                        <th>C13</th>
-                        <th>C14</th>
-                        <th>C15</th>
-                        <th>C16</th>
-                        <th>C17</th>
-                        <th>C18</th>
-                        <th>C19</th>
-                        <th>C20</th>
+                        <?php for ($i = 1; $i <= 20; $i++) {
+                          echo "<th>C$i</th>";
+                        } ?>
                       </tr>
                       <?php
                       $sql = "SELECT
@@ -564,18 +532,12 @@ require "include/conn.php";
               <label for="editName">Name:</label>
               <input type="text" class="form-control" id="editName" name="name" disabled>
             </div>
-            <div class="form-group">
-              <label for="editC1">Nilai C1:</label>
-              <input type="number" class="form-control" id="editC1" name="editC1" required>
-            </div>
-            <div class="form-group">
-              <label for="editC1">Nilai C2:</label>
-              <input type="number" class="form-control" id="editC2" name="editC2" required>
-            </div>
-            <div class="form-group">
-              <label for="editC1">Nilai C3:</label>
-              <input type="number" class="form-control" id="editC3" name="editC3" required>
-            </div>
+            <?php for ($i = 1; $i <= 20; $i++) { ?>
+              <div class="form-group">
+                <label for="editC<?php echo $i; ?>">Nilai C<?php echo $i; ?>:</label>
+                <input type="number" max="4" min="1" class="form-control" id="editC<?php echo $i; ?>" name="editC<?php echo $i; ?>">
+              </div>
+            <?php } ?>
             <div class="modal-footer">
               <button type="button" class="btn btn-light-secondary" data-dismiss="modal" aria-label="Close" onclick="closeEditModal()">
                 Close
@@ -592,16 +554,15 @@ require "include/conn.php";
 
   <script>
     function openEditModal(id) {
-      var xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-          var response = JSON.parse(this.responseText);
-          // console.log(response);
+          const response = JSON.parse(this.responseText);
           document.getElementById("editId").value = response.id_alternative;
           document.getElementById("editName").value = response.name;
-          document.getElementById("editC1").value = response.C1;
-          document.getElementById("editC2").value = response.C2;
-          document.getElementById("editC3").value = response.C3;
+          for (let i = 1; i <= 20; i++) {
+            document.getElementById("editC" + i).value = response["C" + i];
+          }
           document.getElementById("editModal").classList.add("fade");
           document.getElementById("editModal").style.display = "block";
           setTimeout(function() {
@@ -617,47 +578,47 @@ require "include/conn.php";
     function closeEditModal() {
       document.getElementById("editModal").classList.remove("show");
       document.body.classList.remove("modal-open");
-      setTimeout(function() {
+      setTimeout(() => {
         document.getElementById("editModal").style.display = "none";
         document.getElementById("editModal").classList.remove("fade");
       }, 500);
     }
 
     function updateValues() {
-
-      var editC1 = document.getElementById('editC1').value;
-      var editC2 = document.getElementById('editC2').value;
-      var editC3 = document.getElementById('editC3').value;
-      // Ambil nilai C4 hingga C20 yang lainnya sesuai kebutuhan
-
-      // Kirim nilai-nilai ini ke server untuk disimpan
-      var formData = new FormData();
+      const formData = new FormData();
       formData.append('id_alternative', document.getElementById('editId').value);
       formData.append('name', document.getElementById('editName').value);
-      formData.append('editC1', editC1);
-      formData.append('editC2', editC2);
-      formData.append('editC3', editC3);
-      // Tambahkan append untuk C4 hingga C20
 
-      var xhr = new XMLHttpRequest();
+      for (let i = 1; i <= 20; i++) {
+        const editC = document.getElementById('editC' + i).value;
+        formData.append('editC' + i, editC);
+      }
+
+      const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-          var response = JSON.parse(this.responseText);
+          const response = JSON.parse(this.responseText);
           if (response.status === 'success') {
             alert(response.message);
-            closeEditModal()
+            closeEditModal();
+            location.reload(true);
           } else {
             alert(response.message);
-            closeEditModal()
-          };
+            closeEditModal();
+          }
         }
       };
       xhr.open("POST", "matrik-update.php", true);
       xhr.send(formData);
     }
+
+    function confirmDelete(id) {
+      const confirmation = confirm("Apakah Anda yakin ingin menghapus data ini?");
+      if (confirmation) {
+        window.location.href = "keputusan-hapus.php?id=" + id;
+      }
+    }
   </script>
-
-
 </body>
 
 </html>

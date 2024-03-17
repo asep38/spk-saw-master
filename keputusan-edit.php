@@ -1,17 +1,13 @@
 <?php
-// get_alternative_data.php
 
-// Lakukan koneksi ke database
 require_once "include/conn.php";
 
-// Pastikan id_alternative dikirim melalui parameter GET
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die("ID alternatif tidak valid.");
 }
 
 $id_alternative = $_GET['id'];
 
-// Query untuk mendapatkan data alternatif berdasarkan id
 $sql = "SELECT a.*, 
                SUM(IF(e.id_criteria=1, e.value, 0)) AS C1,
                SUM(IF(e.id_criteria=2, e.value, 0)) AS C2,
@@ -42,15 +38,12 @@ $stmt->bind_param("i", $id_alternative);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Pastikan data alternatif ditemukan
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    // Kembalikan data sebagai JSON
     echo json_encode($row);
 } else {
     echo "Data alternatif tidak ditemukan.";
 }
 
-// Tutup statement dan koneksi database
 $stmt->close();
 $db->close();
