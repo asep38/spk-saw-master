@@ -458,16 +458,16 @@ require "include/conn.php";
 
   <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
+      <div class="modal-content" style="overflow-y: auto;">
         <div class="modal-header">
           <h4 class="modal-title" id="myModalLabel33">Isi Nilai Kandidat </h4>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <i data-feather="x"></i>
           </button>
         </div>
-        <form action="matrik-simpan.php" method="POST">
+        <form id="matrikForm" action="matrik-simpan.php" method="POST">
           <div class="modal-body">
-            <label>Name: </label>
+            <label>Nama: </label>
             <div class="form-group">
               <select class="form-control form-select" name="id_alternative">
                 <?php
@@ -483,25 +483,22 @@ require "include/conn.php";
             </div>
           </div>
           <div class="modal-body">
-            <label>Criteria: </label>
             <div class="form-group">
-              <select class="form-control form-select" name="id_criteria">
-                <?php
-                $sql = 'SELECT * FROM saw_criterias';
-                $result = $db->query($sql);
-                $i = 0;
-                while ($row = $result->fetch_object()) {
-                  echo '<option value="' . $row->id_criteria . '">' . 'C' . $row->id_criteria . '-' . $row->criteria . '</option>';
-                }
-                $result->free();
-                ?>
-              </select>
-            </div>
-          </div>
-          <div class="modal-body">
-            <label>Nilai: (masukan nilai dari 1 - 4)</label>
-            <div class="form-group">
-              <input type="text" name="value" class="form-control" required>
+              <?php
+              $sql = 'SELECT * FROM saw_criterias';
+              $result = $db->query($sql);
+              $i = 0;
+              while ($row = $result->fetch_object()) {
+                echo '<label>Criteria:</label>';
+                echo '<label for="criteria' . $row->id_criteria . '">C' . $row->id_criteria . '-' . $row->criteria . '</label>';
+                echo '<br>';
+                echo '<br>';
+                echo '<label>Nilai: (masukan nilai dari 1 - 4)</label>';
+                echo '<input type="number" name="criteria_values[]" class="form-control" id="criteria' . $row->id_criteria . '" min="1" max="4" required>';
+                echo '<br>';
+              }
+              $result->free();
+              ?>
             </div>
           </div>
           <div class="modal-footer">
@@ -553,6 +550,33 @@ require "include/conn.php";
   <?php require "layout/js.php"; ?>
 
   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("matrikForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+            method: this.method,
+            body: formData
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.text();
+            } else {
+              throw new Error('Gagal menyimpan data.');
+            }
+          })
+          .then(data => {
+            alert("Data berhasil dimasukkan ke dalam database!");
+            window.location.href = "matrik.php";
+          })
+          .catch(error => {
+            alert(error.message);
+          });
+      });
+    });
+
     function openEditModal(id) {
       const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
@@ -574,6 +598,15 @@ require "include/conn.php";
       xhr.open("GET", "keputusan-edit.php?id=" + id, true);
       xhr.send();
     }
+
+    document.addEventListener("click", function(event) {
+      const modal = document.getElementById("editModal");
+      const isModalOpen = modal.classList.contains("show");
+
+      if (isModalOpen && event.target === modal) {
+        closeEditModal();
+      }
+    });
 
     function closeEditModal() {
       document.getElementById("editModal").classList.remove("show");
