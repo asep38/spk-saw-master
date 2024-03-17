@@ -165,6 +165,7 @@ require "include/conn.php";
             <td>" . round($row->C19, 2) . "</td>
             <td>" . round($row->C20, 2) . "</td>
             <td>
+            <a href='keputusan-edit.php?id={$row->id_alternative}' class='btn btn-warning btn-sm'>Edit</a>
             <a href='keputusan-hapus.php?id={$row->id_alternative}' class='btn btn-danger btn-sm'>Hapus</a>
             </td>
           </tr>\n";

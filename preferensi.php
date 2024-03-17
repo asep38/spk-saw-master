@@ -42,10 +42,10 @@ require "R.php";
                     <tr>
                       <th>No</th>
                       <th>Kode</th>
-                      <!-- <th>Nama Alternatif</th> -->
+                      <th>Nama Alternatif</th>
                       <th>Hasil</th>
                       <th>Ranking</th>
-                      <th>Aksi</th>
+                      <!-- <th>Aksi</th> -->
                     </tr>
                     <?php
 
@@ -65,19 +65,34 @@ require "R.php";
                     $ranking = array();
                     $rank = 1;
                     foreach ($P as $id_alternative => $value) {
-                      $ranking[$id_alternative] = $rank++;
-                    }
+                      // Query untuk mengambil nama alternatif berdasarkan id_alternative
+                      $query_nama = "SELECT name FROM `saw_alternatives` WHERE id_alternative = $id_alternative";
+                      $hasil = mysqli_query($db, $query_nama);
 
-                    // Tampilkan hasil peringkat dalam tabel
-                    foreach ($ranking as $id_alternative => $rank) {
+                      // Periksa apakah query berhasil dieksekusi
+                      if ($hasil) {
+                        // Periksa apakah ada hasil yang ditemukan
+                        if (mysqli_num_rows($hasil) > 0) {
+                          // Ambil data nama dari hasil query
+                          $row = mysqli_fetch_assoc($hasil);
+                          $name = $row['name'];
+                        } else {
+                          $name = "Nama tidak ditemukan";
+                        }
+                      } else {
+                        $name = "Query tidak berhasil dieksekusi: " . mysqli_error($db);
+                      }
+
+                      // Tampilkan hasil peringkat dalam tabel bersama dengan nama
                       echo "<tr class='center'>
         <td>" . (++$no) . "</td>
         <td>A{$id_alternative}</td>
-        
+        <td>{$name}</td>
         <td>" . number_format($P[$id_alternative], 2) . "</td>
-        <td>" . $rank . "</td>
-        <td> <a href='./export-guru.php?id={$id_alternative}'>Cetak</a> </td>
+        <td>{$rank}</td>
+        
     </tr>";
+                      $rank++;
                     }
                     ?>
                   </table>
