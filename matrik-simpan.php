@@ -2,23 +2,27 @@
 require "include/conn.php";
 
 $id_alternative = $_POST['id_alternative'];
-$id_criteria = $_POST['id_criteria'];
-$value = $_POST['value'];
+$criteria_values = $_POST['criteria_values'];
 
-$sql = "INSERT INTO saw_evaluations values ('$id_alternative','$id_criteria','$value')";
-$result = $db->query($sql);
+$total_criteria = count($criteria_values);
 
-try {
-    //code...
-    if ($result === true) {
-        header("location:./matrik.php");
+for ($i = 0; $i < $total_criteria; $i++) {
+    $value = $criteria_values[$i];
+
+    $id_criteria = $i + 1;
+
+    if ($value >= 1 && $value <= 4) {
+        $sql = "INSERT INTO saw_evaluations (id_alternative, id_criteria, value) VALUES ('$id_alternative', '$id_criteria', '$value')";
+        $result = $db->query($sql);
+
+        if (!$result) {
+            echo '<script>alert("Gagal menyimpan data. Mungkin terdapat entri duplikat."); window.location.href="matrik.php";</script>';
+            exit();
+        }
     } else {
-        echo '<script>alert("Gagal menyimpan data. Mungkin terdapat entri duplikat."); window.location.href="matrik.php";</script>';
-        // echo "Error: " . $sql . "<br>" . $db->error;
+        echo '<script>alert("Nilai kriteria tidak valid."); window.location.href="matrik.php";</script>';
+        exit();
     }
-} catch (mysqli_sql_exception $e) {
-    //throw $th;
-    echo '<script>alert("Terjadi kesalahan: ' . $e->getMessage() . '"); window.location.href="matrik.php";</script>';
 }
 
-
+header("location:./matrik.php");
