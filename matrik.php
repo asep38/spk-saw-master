@@ -174,11 +174,13 @@ require "include/conn.php";
             <td>" . round($row->C19, 2) . "</td>
             <td>" . round($row->C20, 2) . "</td>
             <td>
+
                 <div class='btn-group'>
                     <button type='button' class='btn btn-danger btn-sm mx-1' onclick='confirmDelete({$row->id_alternative})'>Hapus</button>
                     <button type='button' class='btn btn-primary btn-sm' 
                     onclick='openEditModal({$row->id_alternative})'>Edit</button>
                   </div>
+
             </td>
           </tr>\n";
                       }

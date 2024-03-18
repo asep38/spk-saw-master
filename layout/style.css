@@ -1,0 +1,8 @@
+.sidebar-link:hover {
+  color: black;
+}
+
+.sidebar-item:hover .sidebar-link {
+  color: blue;
+  /* Ganti dengan warna yang Anda inginkan saat dihover */
+}
