@@ -59,6 +59,7 @@ require "include/conn.php";
         <td>{$row->attribute}</td>
         <td>
             <a href='bobot-edit.php?id={$row->id_criteria}' class='btn btn-info btn-sm'>Edit</a>
+            <a href='bobot-hapus-act.php?id={$row->id_criteria}' class='btn btn-danger btn-sm'>Delete</a>
             </td>
       </tr>\n";
                     }
