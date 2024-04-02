@@ -54,7 +54,7 @@ require "R.php";
                     $no = 0;
                     foreach ($R as $i => $r) {
                       for ($j = 0; $j < $m; $j++) {
-                        $P[$i] = (isset ($P[$i]) ? $P[$i] : 0) + $r[$j] * $W[$j];
+                        $P[$i] = (isset($P[$i]) ? $P[$i] : 0) + $r[$j] * $W[$j];
                       }
                     }
 

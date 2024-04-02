@@ -30,16 +30,50 @@ if ($hasil) {
     .no-border {
       border: none;
     }
+
+    .print-button {
+      display: block;
+    }
+
+    @media print {
+      .print-button {
+        display: none;
+      }
+    }
+
+    img {
+      height: 100px;
+    }
+
+    .uppercase {
+      text-transform: uppercase;
+    }
   </style>
 </head>
 
 <body>
+  <div class="container d-flex justify-content-between mt-4">
+    <div>
+      <img src="assets/images/LogoKabupatenCiamis.png" alt="">
+    </div>
+    <div class="text-center">
+      <p class="uppercase">
+        Pemerintah kabupaten ciamis dinas pendidikan
+      </p>
+      <h2>
+        SMP NEGERI 1 CIHAURBEUTI
+      </h2>
+      <p>
+        Jl.Panjalu No.26 Sukamulya Cihaurbeuti tlp.(0265)336005 Ciamis
+      </p>
+    </div>
+    <div>
+      <img src="assets/images/logo-smpn1.jpeg" alt="">
+    </div>
+  </div>
+
   <div class="container">
-    <h2>
-      Nilai
-    </h2>
-
-
+    <button class="print-button" onclick="window.print()">Cetak Halaman</button>
     <div class="data-tables datatable-dark">
       <table class="table table-bordered" id="mauexport" width="100%" cellspacing="0" data-page-length="20">
         <thead>
@@ -98,14 +132,12 @@ if ($hasil) {
         <td>" . number_format($P[$id_alternative], 2) . "</td>
         <td>{$rank}</td>
         
-    </tr>";
+      </tr>";
             $rank++;
           }
           ?>
 
         </tbody>
-
-
       </table>
     </div>
   </div>
@@ -121,29 +153,25 @@ if ($hasil) {
   <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 
   <script>
-    $(document).ready(function () {
-      var table = $('#mauexport').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-          {
-            extend: 'excel',
-            footer: true
-          },
-          {
-            extend: 'pdf',
-            footer: true
-          },
-          {
-            extend: 'print',
-            footer: true
-          }
-        ]
-      });
-
-
-
-
-    });
+    // $(document).ready(function () {
+    //   var table = $('#mauexport').DataTable({
+    //     dom: 'Bfrtip',
+    //     buttons: [
+    //       {
+    //         extend: 'excel',
+    //         footer: true
+    //       },
+    //       {
+    //         extend: 'pdf',
+    //         footer: true
+    //       },
+    //       {
+    //         extend: 'print',
+    //         footer: true
+    //       }
+    //     ]
+    //   });
+    // });
   </script>
 
 </body>
