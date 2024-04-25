@@ -140,6 +140,20 @@ if ($hasil) {
         </tbody>
       </table>
     </div>
+    <div class="container d-flex justify-content-between">
+      <div></div>
+      <div>
+        Ciamis, <span id="tanggalwaktu"></span>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        ___________________________________
+        <br>
+        (Kepala Sekolah)
+      </div>
+    </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -172,6 +186,13 @@ if ($hasil) {
     //     ]
     //   });
     // });
+  </script>
+  <script>
+    var dt = new Date();
+    var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    var namaBulan = bulan[dt.getMonth()];
+
+    document.getElementById("tanggalwaktu").innerHTML = ("0" + dt.getDate()).slice(-2) + " " + namaBulan + " " + dt.getFullYear();
   </script>
 
 </body>
